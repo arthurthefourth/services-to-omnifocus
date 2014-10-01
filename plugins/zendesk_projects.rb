@@ -19,7 +19,6 @@ require "zendesk_api"
 
 ZENDESK_VIEW_ID = ENV['ZENDESK_VIEW']
 ZENDESK_BASE_URI = ENV['ZENDESK_HOST']
-ZENDESK_CONTEXT = ENV['ZENDESK_CONTEXT']
 
 @zendesk = ZendeskAPI::Client.new do |config|
   config.url = File.join(ENV['ZENDESK_HOST'], '/api/v2')

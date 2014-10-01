@@ -4,7 +4,8 @@
 # to tasks in OmniFocus are *not* synced back to Zendesk at this point.
 #
 # This plugin works with Omnifocus 1. Not tested with Omnifocus 2.
-#
+# Code is mostly from zendesk.rb with a few tweaks to make it project-specific.
+
 # Authentication data is taken from these environment variables:
 #
 #   ZENDESK_HOST: Contains the name of the virtual host of your Zendesk account

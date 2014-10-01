@@ -3,6 +3,8 @@
 # When tickets change in Zendesk, those changes are reflected in OmniFocus. Changes
 # to tasks in OmniFocus are *not* synced back to Zendesk at this point.
 #
+# This plugin works with Omnifocus 1. Not tested with Omnifocus 2.
+#
 # Authentication data is taken from these environment variables:
 #
 #   ZENDESK_HOST: Contains the name of the virtual host of your Zendesk account
@@ -41,14 +43,14 @@ def set_project_status(project, row)
       puts "Setting Project ##{row.ticket.id} as Active"
       project.status.set :active
     end
-  when 'solved' then
+  when 'solved', 'closed' then
     unless project.completed.get
-      puts "Completing Ticket ##{row.ticket.id} in OmniFocus"
-      project.status.set :done
+      puts "Completing Project ##{row.ticket.id} in OmniFocus"
+      project.completed.set true
     end
   when 'pending', 'hold' then
     unless project.status.get == :on_hold
-      puts "Marking Ticket ##{row.ticket.id} as On Hold"
+      puts "Marking Project ##{row.ticket.id} as On Hold"
       project.status.set :on_hold
     end
   end
@@ -59,7 +61,7 @@ end
   project = folder.projects[its.name.contains(row.ticket.id)].first.get rescue nil
 
   unless project
-    puts "Adding Ticket ##{row.ticket.id}"
+    puts "Adding Project ##{row.ticket.id}"
     project = folder.make :new => :project, :with_properties => {
       :name => ticket_name(row),
       :note => ZENDESK_BASE_URI + '/tickets/' + row.ticket.id.to_s
